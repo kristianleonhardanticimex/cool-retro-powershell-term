@@ -17,6 +17,12 @@
    - Render characters as textured quads
    - Implement basic text layout (rows/columns)
 
+   // Asset folders created:
+   //   /assets/fonts
+   //   /assets/shaders
+   //   /assets/audio
+   // Place relevant files in these folders for future tasks.
+
 4. **CRT Visual Effects**
    - Implement scanlines and curved screen shaders
    - Add phosphor glow, bloom, and fade effects
