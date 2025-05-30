@@ -16,16 +16,32 @@ This document describes the workflow and collaboration process for working with 
 
 4. **Confirmation & Versioning**
    - When the user confirms the task is working as expected:
-     - Copilot bumps the version number in the software (if applicable).
+     - Copilot bumps the version number in the software (using semantic versioning).
      - Copilot adds a summary of the change to `CHANGELOG.md`.
 
 5. **Repeat**
    - The process repeats for each new task or feature.
 
-## Notes
-- All changes and workflow steps are documented for transparency and traceability.
-- The process is iterative and user-driven, ensuring quality and alignment with project goals.
-- This file will be updated as the workflow evolves.
+## Project Structure Guidelines
+
+- All source code should reside in the `/src` directory (e.g., `/src/CoolRetroPowershellTerm`).
+- Solution file (`.sln`) should be in the project root.
+- Documentation is kept in `/docs`.
+- Assets (fonts, shaders, audio) should be placed in `/assets`.
+- GitHub and workflow configuration in `/.github`.
+- Changelog in `/CHANGELOG.md`.
+
+**Example Structure:**
+```
+/ (root)
+  /src/CoolRetroPowershellTerm
+  /docs
+  /assets
+  /.github
+  CHANGELOG.md
+  README.md
+  cool-retro-powershell-term.sln
+```
 
 ---
 

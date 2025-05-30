@@ -2,7 +2,7 @@
 
 ## Task Prioritization (Top = Highest Priority)
 
-1. **Project Setup & Scaffolding**
+1. **Project Setup & Scaffolding** ✅ Completed v0.1.0 (2025-05-30)
    - Initialize C# solution and main project
    - Set up OpenTK and windowing
    - Prepare asset folders (fonts, shaders, audio)

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Launch Console App (CoolRetroPowershellTerm)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/CoolRetroPowershellTerm/bin/Debug/net9.0/CoolRetroPowershellTerm.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/CoolRetroPowershellTerm",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
