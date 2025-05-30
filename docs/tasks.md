@@ -7,7 +7,7 @@
    - Set up OpenTK and windowing
    - Prepare asset folders (fonts, shaders, audio)
 
-2. **Text Buffer & Data Structures**
+2. **Text Buffer & Data Structures** ✅ Completed v0.2.0 (2025-05-30)
    - Implement CharEntry struct and 2D buffer
    - Buffer logic for writing/updating characters
    - Simulate terminal output for early testing
