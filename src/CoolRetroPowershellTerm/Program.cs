@@ -2,6 +2,7 @@
 using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
+using CoolRetroPowershellTerm;
 
 namespace CoolRetroPowershellTerm
 {
@@ -9,6 +10,7 @@ namespace CoolRetroPowershellTerm
     {
         static void Main(string[] args)
         {
+            Logger.Info("Application starting.");
             var nativeWindowSettings = new NativeWindowSettings()
             {
                 ClientSize = new Vector2i(800, 600),
@@ -22,43 +24,75 @@ namespace CoolRetroPowershellTerm
             // Attempt to load font atlas (if present)
             BitmapFont? font = null;
             string fontPath = "assets/fonts/ascii_16x16.png";
-            if (System.IO.File.Exists(fontPath))
+            try
             {
-                font = new BitmapFont(fontPath, 10, 12, 16, 16); // 10x12 cell, 16x16 grid
+                if (System.IO.File.Exists(fontPath))
+                {
+                    font = new BitmapFont(fontPath, 10, 12, 16, 16); // 10x12 cell, 16x16 grid
+                    Logger.Info($"Font loaded: {fontPath}");
+                }
+                else
+                {
+                    Logger.Info($"Font not found: {fontPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to load font: {fontPath}", ex);
             }
 
-            using (var window = new GameWindow(GameWindowSettings.Default, nativeWindowSettings))
+            try
             {
-                window.RenderFrame += (frame) =>
+                using (var window = new GameWindow(GameWindowSettings.Default, nativeWindowSettings))
                 {
-                    GL.Clear(ClearBufferMask.ColorBufferBit);
-                    if (font != null)
+                    Logger.Info("Window created successfully.");
+                    window.RenderFrame += (frame) =>
                     {
-                        // Render the text buffer using the font atlas
-                        for (int row = 0; row < buffer.Rows; row++)
+                        try
                         {
-                            for (int col = 0; col < buffer.Cols; col++)
+                            GL.ClearColor(0.1f, 0.1f, 0.15f, 1.0f); // Retro dark blue background
+                            GL.Clear(ClearBufferMask.ColorBufferBit);
+                            Logger.Info($"RenderFrame at {DateTime.Now:HH:mm:ss.fff}");
+                            if (font != null)
                             {
-                                var entry = buffer.Buffer[row, col];
-                                if (entry.Value != ' ')
+                                // Render the text buffer using the font atlas
+                                for (int row = 0; row < buffer.Rows; row++)
                                 {
-                                    int charCode = (int)entry.Value;
-                                    int gridX = charCode % font.GridCols;
-                                    int gridY = charCode / font.GridCols;
-                                    float u0 = gridX / (float)font.GridCols;
-                                    float v0 = gridY / (float)font.GridRows;
-                                    float u1 = (gridX + 1) / (float)font.GridCols;
-                                    float v1 = (gridY + 1) / (float)font.GridRows;
-                                    float x = col * font.GlyphWidth;
-                                    float y = row * font.GlyphHeight;
-                                    // TODO: Draw textured quad at (x, y) with UV (u0,v0)-(u1,v1)
+                                    for (int col = 0; col < buffer.Cols; col++)
+                                    {
+                                        var entry = buffer.Buffer[row, col];
+                                        if (entry.Value != ' ')
+                                        {
+                                            int charCode = (int)entry.Value;
+                                            int gridX = charCode % font.GridCols;
+                                            int gridY = charCode / font.GridCols;
+                                            float u0 = gridX / (float)font.GridCols;
+                                            float v0 = gridY / (float)font.GridRows;
+                                            float u1 = (gridX + 1) / (float)font.GridCols;
+                                            float v1 = (gridY + 1) / (float)font.GridRows;
+                                            float x = col * font.GlyphWidth;
+                                            float y = row * font.GlyphHeight;
+                                            // TODO: Draw textured quad at (x, y) with UV (u0,v0)-(u1,v1)
+                                        }
+                                    }
                                 }
                             }
+                            // Swap the front and back buffers to present the frame
+                            window.SwapBuffers();
                         }
-                    }
-                };
-                window.Run();
+                        catch (Exception ex)
+                        {
+                            Logger.Error("Error during rendering.", ex);
+                        }
+                    };
+                    window.Run();
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.Error("Windowing or render loop error.", ex);
+            }
+            Logger.Info("Application exiting.");
         }
     }
 }
