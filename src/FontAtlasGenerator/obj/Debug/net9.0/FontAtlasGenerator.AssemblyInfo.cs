@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FontAtlasGenerator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2506ec4dc25a96600a642a85287e95ee00ad9bd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2cb22c383bf0a2ad9ee40c883aecee2363d6d02")]
 [assembly: System.Reflection.AssemblyProductAttribute("FontAtlasGenerator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FontAtlasGenerator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

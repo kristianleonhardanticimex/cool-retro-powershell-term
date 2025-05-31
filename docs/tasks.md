@@ -12,7 +12,7 @@
    - Buffer logic for writing/updating characters
    - Simulate terminal output for early testing
 
-3. **Basic Rendering & Logging**
+3. **Basic Rendering & Logging** ✅ Completed v0.3.0 (2025-05-30)
    - Get any rendering output on screen (clear color, test quad, etc.)
    - Set up and verify logging (to file/console)
    - Ensure render loop and error reporting are robust

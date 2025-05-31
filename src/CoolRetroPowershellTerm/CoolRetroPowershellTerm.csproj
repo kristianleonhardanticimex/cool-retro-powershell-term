@@ -15,4 +15,11 @@
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Copy all assets (fonts, shaders, audio) to output directory from the project-local assets folder -->
+    <None Include="assets\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

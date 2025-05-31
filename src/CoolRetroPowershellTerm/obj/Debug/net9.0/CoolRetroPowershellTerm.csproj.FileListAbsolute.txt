@@ -30,3 +30,7 @@ C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\obj\Debug\net9.
 C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\obj\Debug\net9.0\CoolRetroPowershellTerm.pdb
 C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\obj\Debug\net9.0\CoolRetroPowershellTerm.genruntimeconfig.cache
 C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\obj\Debug\net9.0\ref\CoolRetroPowershellTerm.dll
+C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\bin\Debug\net9.0\assets\fonts\.keep
+C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\bin\Debug\net9.0\assets\fonts\ascii_16x16.png
+C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\bin\Debug\net9.0\assets\fonts\LightChop-5x7.ttf
+C:\Source\cool-retro-powershell-term\src\CoolRetroPowershellTerm\bin\Debug\net9.0\assets\fonts\LightChop-7x9.ttf

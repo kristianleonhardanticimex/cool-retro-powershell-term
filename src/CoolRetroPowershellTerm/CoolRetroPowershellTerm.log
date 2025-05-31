@@ -3318,3 +3318,4 @@
 [2025-05-30 20.36.43] [INFO] RenderFrame at 20.36.43.071
 [2025-05-30 20.36.43] [INFO] RenderFrame at 20.36.43.215
 [2025-05-30 20.36.43] [INFO] Application exiting.
+[2025-05-31 10.52.36] [ERROR] Font not found: assets/fonts/ascii_16x16.png
