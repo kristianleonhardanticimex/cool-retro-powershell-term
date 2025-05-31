@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2025-05-31
+### Changed
+- Font rendering now uses double-size glyphs for a larger retro look.
+- Terminal prompt and text now start at the true upper-left, with a top margin for aesthetics.
+- Background for all terminal cells now matches the retro dark blue, eliminating black/transparent artifacts.
+- Asset copying and font path resolution are robust for all build/run scenarios.
+
 ## [0.3.0] - 2025-05-30
 ### Added
 - Basic rendering loop now displays a retro dark blue background using OpenGL clear color.
