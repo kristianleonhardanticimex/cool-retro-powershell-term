@@ -39,7 +39,8 @@ namespace CoolRetroPowershellTerm
             var buffer = new TextBuffer(rows, cols);
             buffer.WriteString(0, 0, "Welcome to Cool Retro Powershell Term!");
             buffer.WriteString(1, 0, "This is a simulated terminal output.");
-
+            // Move the welcome message to the top row
+            // ...existing code...
             try
             {
                 using (var window = new GameWindow(GameWindowSettings.Default, nativeWindowSettings))
@@ -102,19 +103,19 @@ namespace CoolRetroPowershellTerm
                                 int texLocation = GL.GetUniformLocation(shaderProgram, "tex");
                                 if (texLocation != -1)
                                     GL.Uniform1(texLocation, 0);
+                                int marginTop = 12; // Add a top margin in pixels (half a glyph height)
                                 for (int row = 0; row < buffer.Rows; row++)
                                 {
                                     for (int col = 0; col < buffer.Cols; col++)
                                     {
                                         var entry = buffer.Buffer[row, col];
                                         float x = col * font.GlyphWidth;
-                                        // Flip y so row 0 is at the top
-                                        float y = row * font.GlyphHeight;
-                                        float y_flipped = window.Size.Y - (y + font.GlyphHeight);
-                                        float[] bgColor = new float[] { 0.0f, 0.0f, 0.0f, 0.7f };
+                                        float y = marginTop + row * font.GlyphHeight; // Add margin to y
+                                        // Draw background quad with dark blue color (matches ClearColor)
+                                        float[] bgColor = new float[] { 0.1f, 0.1f, 0.15f, 1.0f }; // dark blue
                                         GL.Uniform4(uColorLocation, 1, bgColor);
                                         GL.Uniform1(uUseTextureLocation, 0);
-                                        DrawQuad(x, y_flipped, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
+                                        DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
                                         if (entry.Value != ' ')
                                         {
                                             int charCode = (int)entry.Value;
@@ -129,7 +130,7 @@ namespace CoolRetroPowershellTerm
                                             float[] fgColor = new float[] { 0.8f, 1.0f, 0.8f, 1.0f };
                                             GL.Uniform4(uColorLocation, 1, fgColor);
                                             GL.Uniform1(uUseTextureLocation, 1);
-                                            DrawQuad(x, y_flipped, font.GlyphWidth, font.GlyphHeight, u0, v0, u1, v1);
+                                            DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, u0, v0, u1, v1);
                                         }
                                     }
                                 }

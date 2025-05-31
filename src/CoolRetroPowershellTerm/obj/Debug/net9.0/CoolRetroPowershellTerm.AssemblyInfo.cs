@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoolRetroPowershellTerm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2cb22c383bf0a2ad9ee40c883aecee2363d6d02")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc9a80a6eb2cc152bd38c6bf279762987f8627f1")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoolRetroPowershellTerm")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoolRetroPowershellTerm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.3.0")]
