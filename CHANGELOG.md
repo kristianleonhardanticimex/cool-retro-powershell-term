@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-06-01
+### Added
+- Per-cell colored backgrounds: Each character cell can now have its own background color, supporting retro terminal color effects.
+- Demo row with colored backgrounds to visually verify per-cell coloring.
+- API for writing text with custom background color in `TextBuffer`.
+
+### Changed
+- Rendering loop now uses each cell's background color, not just a global color.
+
 ## [0.3.1] - 2025-05-31
 ### Changed
 - Font rendering now uses double-size glyphs for a larger retro look.

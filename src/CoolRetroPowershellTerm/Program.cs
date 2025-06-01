@@ -37,10 +37,10 @@ namespace CoolRetroPowershellTerm
             };
 
             var buffer = new TextBuffer(rows, cols);
-            buffer.WriteString(0, 0, "Welcome to Cool Retro Powershell Term!");
-            buffer.WriteString(1, 0, "This is a simulated terminal output.");
-            // Move the welcome message to the top row
-            // ...existing code...
+            buffer.WriteString(0, 0, "Welcome to Cool Retro Powershell Term!", 0.1f, 0.1f, 0.15f, 1.0f);
+            buffer.WriteString(1, 0, "This is a simulated terminal output.", 0.1f, 0.1f, 0.15f, 1.0f);
+            // Example: add a colored background row
+            testColoredRow(buffer);
             try
             {
                 using (var window = new GameWindow(GameWindowSettings.Default, nativeWindowSettings))
@@ -110,9 +110,9 @@ namespace CoolRetroPowershellTerm
                                     {
                                         var entry = buffer.Buffer[row, col];
                                         float x = col * font.GlyphWidth;
-                                        float y = marginTop + row * font.GlyphHeight; // Add margin to y
-                                        // Draw background quad with dark blue color (matches ClearColor)
-                                        float[] bgColor = new float[] { 0.1f, 0.1f, 0.15f, 1.0f }; // dark blue
+                                        float y = marginTop + row * font.GlyphHeight;
+                                        // Use per-cell background color
+                                        float[] bgColor = new float[] { entry.BgR, entry.BgG, entry.BgB, entry.BgA };
                                         GL.Uniform4(uColorLocation, 1, bgColor);
                                         GL.Uniform1(uUseTextureLocation, 0);
                                         DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
@@ -220,6 +220,22 @@ void main() {
             GL.DeleteShader(vs);
             GL.DeleteShader(fs);
             return prog;
+        }
+
+        // Helper for demo: add a row with colored backgrounds
+        static void testColoredRow(TextBuffer buffer)
+        {
+            int row = 3;
+            string text = "Color demo: ";
+            buffer.WriteString(row, 0, text, 0.1f, 0.1f, 0.15f, 1.0f);
+            // Write colored blocks
+            buffer.WriteChar(row, text.Length + 0, 'R', 0.4f, 0.1f, 0.1f, 1.0f); // Red
+            buffer.WriteChar(row, text.Length + 1, 'G', 0.1f, 0.4f, 0.1f, 1.0f); // Green
+            buffer.WriteChar(row, text.Length + 2, 'B', 0.1f, 0.1f, 0.4f, 1.0f); // Blue
+            buffer.WriteChar(row, text.Length + 3, 'Y', 0.4f, 0.4f, 0.1f, 1.0f); // Yellow
+            buffer.WriteChar(row, text.Length + 4, 'M', 0.4f, 0.1f, 0.4f, 1.0f); // Magenta
+            buffer.WriteChar(row, text.Length + 5, 'C', 0.1f, 0.4f, 0.4f, 1.0f); // Cyan
+            buffer.WriteChar(row, text.Length + 6, 'W', 0.7f, 0.7f, 0.7f, 1.0f); // White
         }
     }
 }

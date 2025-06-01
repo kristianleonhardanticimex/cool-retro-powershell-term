@@ -7,6 +7,7 @@ namespace CoolRetroPowershellTerm
         public char Value;
         public float TimeWritten;
         public bool IsNewlyWritten;
+        public float BgR, BgG, BgB, BgA; // Background color (RGBA)
     }
 
     public class TextBuffer
@@ -27,22 +28,26 @@ namespace CoolRetroPowershellTerm
             Clear();
         }
 
-        public void WriteChar(int row, int col, char value)
+        public void WriteChar(int row, int col, char value, float bgR = 0.1f, float bgG = 0.1f, float bgB = 0.15f, float bgA = 1.0f)
         {
             if (row < 0 || row >= rows || col < 0 || col >= cols) return;
             buffer[row, col] = new CharEntry
             {
                 Value = value,
                 TimeWritten = (float)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                IsNewlyWritten = true
+                IsNewlyWritten = true,
+                BgR = bgR,
+                BgG = bgG,
+                BgB = bgB,
+                BgA = bgA
             };
         }
 
-        public void WriteString(int row, int col, string value)
+        public void WriteString(int row, int col, string value, float bgR = 0.1f, float bgG = 0.1f, float bgB = 0.15f, float bgA = 1.0f)
         {
             for (int i = 0; i < value.Length && (col + i) < cols; i++)
             {
-                WriteChar(row, col + i, value[i]);
+                WriteChar(row, col + i, value[i], bgR, bgG, bgB, bgA);
             }
         }
 
