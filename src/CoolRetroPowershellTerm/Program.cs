@@ -27,7 +27,7 @@ namespace CoolRetroPowershellTerm
             int glyphH = 24; // doubled from 12
             // Resolve font path relative to executable
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "ascii_16x16.png");
+            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "LightChop-7x9.ttf");
             Logger.Info($"Resolved font path: {resolvedFontPath}");
             fontPath = resolvedFontPath;
             var nativeWindowSettings = new NativeWindowSettings()
@@ -92,6 +92,8 @@ namespace CoolRetroPowershellTerm
                     {
                         try
                         {
+                            GL.Enable(EnableCap.Blend);
+                            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
                             GL.ClearColor(0.1f, 0.1f, 0.15f, 1.0f);
                             GL.Clear(ClearBufferMask.ColorBufferBit);
                             if (font != null)
@@ -116,11 +118,12 @@ namespace CoolRetroPowershellTerm
                                         GL.Uniform4(uColorLocation, 1, bgColor);
                                         GL.Uniform1(uUseTextureLocation, 0);
                                         DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
-                                        if (entry.Value != ' ')
+                                        if (entry.Value != ' ' && (int)entry.Value >= 32 && (int)entry.Value < 32 + font.GridCols * font.GridRows)
                                         {
                                             int charCode = (int)entry.Value;
-                                            int gridX = charCode % font.GridCols;
-                                            int gridY = charCode / font.GridCols;
+                                            int gridIndex = charCode - 32;
+                                            int gridX = gridIndex % font.GridCols;
+                                            int gridY = gridIndex / font.GridCols;
                                             float u0 = gridX / (float)font.GridCols;
                                             float v0 = gridY / (float)font.GridRows;
                                             float u1 = (gridX + 1) / (float)font.GridCols;
@@ -202,6 +205,7 @@ out vec4 outColor;
 void main() {
     if (uUseTexture == 1) {
         vec4 texColor = texture(tex, vUV);
+        if (texColor.a < 0.1) discard; // Debug: discard transparent fragments
         outColor = texColor * uColor;
     } else {
         outColor = uColor;
