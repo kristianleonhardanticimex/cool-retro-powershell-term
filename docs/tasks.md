@@ -23,16 +23,14 @@
    - Render colored backgrounds for each cell
    - Implement basic text layout (rows/columns)
 
-   // Asset folders created:
-   //   /assets/fonts
-   //   /assets/shaders
-   //   /assets/audio
-   // Place relevant files in these folders for future tasks.
-
 5. **CRT Visual Effects**
+   - Adopt the cool-retro-term color palette (background, foreground, selection, etc.)
    - Implement scanlines and curved screen shaders
    - Add phosphor glow, bloom, and fade effects
+   - Overlay subtle animated noise/grain
+   - Ensure font and text rendering matches the original (pixel-perfect, correct font)
    - Optional: color shifting/flicker
+   - (Optional) Draw a retro terminal frame/border
 
 6. **Cursor Implementation**
    - Blinking, stylized cursor (block/underscore)
