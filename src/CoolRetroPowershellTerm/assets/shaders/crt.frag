@@ -19,5 +19,8 @@ void main() {
     // Clamp to [0,1] to avoid sampling outside
     sampleUV = clamp(sampleUV, 0.0, 1.0);
     vec3 color = texture(screenTex, sampleUV).rgb;
+    // Apply retro orange tint (FFAB2B)
+    vec3 retroColor = vec3(1.0, 0.67, 0.17); // #FFAB2B normalized
+    color *= retroColor;
     outColor = vec4(color, 1.0);
 }
