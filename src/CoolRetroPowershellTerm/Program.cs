@@ -23,14 +23,14 @@ namespace CoolRetroPowershellTerm
             // Adjust buffer and window size to fit glyphs
             int cols = 80;
             int rows = 25;
-            int glyphW = 20; // doubled from 10
-            int glyphH = 24; // doubled from 12
+            int glyphW = 12; // native pixel width for Terminus
+            int glyphH = 24; // native pixel height for Terminus
             int lineSpacing = 4; // vertical space between lines
             int cellHeight = glyphH + lineSpacing;
             int margin = 10; // margin for all sides
             // Resolve font path relative to executable
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "TerminusTTF-4.49.3.ttf");
+            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "PxPlus_IBM_VGA8.ttf");
             Logger.Info($"Resolved font path: {resolvedFontPath}");
             fontPath = resolvedFontPath;
             var nativeWindowSettings = new NativeWindowSettings()
@@ -134,7 +134,7 @@ namespace CoolRetroPowershellTerm
                                             float v1 = (gridY + 1) / (float)font.GridRows;
                                             GL.ActiveTexture(TextureUnit.Texture0);
                                             GL.BindTexture(TextureTarget.Texture2D, font.TextureId);
-                                            float[] fgColor = new float[] { 0.8f, 1.0f, 0.8f, 1.0f };
+                                            float[] fgColor = new float[] { 1.0f, 0.72f, 0.42f, 1.0f }; // cool-retro-term orange
                                             GL.Uniform4(uColorLocation, 1, fgColor);
                                             GL.Uniform1(uUseTextureLocation, 1);
                                             DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, u0, v0, u1, v1);
