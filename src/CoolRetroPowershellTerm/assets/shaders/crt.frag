@@ -9,7 +9,7 @@ void main() {
     vec2 boxUV = vUV;
     vec2 centered = (boxUV - 0.5) * 2.0;
     float r2 = dot(centered, centered);
-    float k = 0.08; // strong curvature
+    float k = 0.045; // moderate curvature
     vec2 curved = centered * (1.0 + k * r2);
     vec2 sampleUV = curved * 0.5 + 0.5;
     // Clamp to [0,1] to avoid sampling outside
