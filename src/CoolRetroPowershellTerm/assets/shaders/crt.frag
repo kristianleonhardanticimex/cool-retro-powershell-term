@@ -22,5 +22,25 @@ void main() {
     // Apply retro orange tint (FFAB2B)
     vec3 retroColor = vec3(1.0, 0.67, 0.17); // #FFAB2B normalized
     color *= retroColor;
-    outColor = vec4(color, 1.0);
+    // --- Glow effect (true fullscreen, not masked by text area or curvature) ---
+    float glowStrength = 0.32;
+    float glowSize = 0.012;
+    vec3 glow = vec3(0.0);
+    float totalWeight = 0.0;
+    for (int x = -3; x <= 3; ++x) {
+        for (int y = -3; y <= 3; ++y) {
+            float weight = 1.0 - 0.13 * (abs(x) + abs(y));
+            vec2 offset = vec2(float(x), float(y)) * glowSize;
+            // Use vUV for the glow kernel center, and sample the original framebuffer at vUV+offset
+            vec2 glowUV = clamp(vUV + offset, 0.0, 1.0);
+            vec3 glowSample = texture(screenTex, glowUV).rgb * retroColor;
+            // Remove threshold: accumulate glow everywhere for a true fullscreen effect
+            glow += mix(vec3(0.0), glowSample, 0.6) * weight;
+            totalWeight += weight;
+        }
+    }
+    if (totalWeight > 0.0) glow /= totalWeight;
+    glow *= glowStrength;
+    // Combine glow and main color
+    outColor = vec4(min(color + glow, 1.0), 1.0);
 }
