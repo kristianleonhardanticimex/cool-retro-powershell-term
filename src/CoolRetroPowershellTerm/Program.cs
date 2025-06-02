@@ -137,6 +137,9 @@ namespace CoolRetroPowershellTerm
                         {
                             GL.Enable(EnableCap.Blend);
                             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+                            // --- 1. Render terminal to offscreen framebuffer ---
+                            GL.BindFramebuffer(FramebufferTarget.Framebuffer, crtFbo);
+                            GL.Viewport(0, 0, window.Size.X, window.Size.Y);
                             GL.ClearColor(RetroBackground.X, RetroBackground.Y, RetroBackground.Z, RetroBackground.W);
                             GL.Clear(ClearBufferMask.ColorBufferBit);
                             if (font != null)
@@ -147,9 +150,8 @@ namespace CoolRetroPowershellTerm
                                 int texLocation = GL.GetUniformLocation(shaderProgram, "tex");
                                 if (texLocation != -1)
                                     GL.Uniform1(texLocation, 0);
-                                // Center the text buffer vertically (top-aligned)
                                 int totalTextHeight = buffer.Rows * cellHeight;
-                                int yOffset = margin; // Always start at margin from the top
+                                int yOffset = margin;
                                 for (int row = 0; row < buffer.Rows; row++)
                                 {
                                     for (int col = 0; col < buffer.Cols; col++)
@@ -184,6 +186,20 @@ namespace CoolRetroPowershellTerm
                                 GL.BindVertexArray(0);
                                 GL.UseProgram(0);
                             }
+                            // --- 2. Render CRT post-process to screen ---
+                            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+                            GL.Viewport(0, 0, window.Size.X, window.Size.Y);
+                            GL.ClearColor(0f, 0f, 0f, 1f);
+                            GL.Clear(ClearBufferMask.ColorBufferBit);
+                            GL.UseProgram(crtShaderProgram);
+                            GL.BindVertexArray(crtVao);
+                            GL.ActiveTexture(TextureUnit.Texture0);
+                            GL.BindTexture(TextureTarget.Texture2D, crtTexture);
+                            GL.Uniform1(uScreenTexLocation, 0);
+                            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                            GL.BindTexture(TextureTarget.Texture2D, 0);
+                            GL.BindVertexArray(0);
+                            GL.UseProgram(0);
                             window.SwapBuffers();
                         }
                         catch (Exception ex)
