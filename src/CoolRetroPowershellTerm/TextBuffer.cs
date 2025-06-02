@@ -20,6 +20,13 @@ namespace CoolRetroPowershellTerm
         public int Cols => cols;
         public CharEntry[,] Buffer => buffer;
 
+        public int CursorRow { get; set; } = 0;
+        public int CursorCol { get; set; } = 0;
+        public bool CursorVisible { get; set; } = true;
+        public bool CursorBlink { get; set; } = true;
+        public float CursorBlinkRate { get; set; } = 1.0f; // Hz
+        public float CursorBlinkTimer { get; set; } = 0.0f;
+
         public TextBuffer(int rows, int cols)
         {
             this.rows = rows;

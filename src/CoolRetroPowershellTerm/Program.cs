@@ -182,6 +182,19 @@ namespace CoolRetroPowershellTerm
                                         }
                                     }
                                 }
+                                // Draw cursor if visible
+                                if (buffer.CursorVisible && (!buffer.CursorBlink || (Math.Floor(buffer.CursorBlinkTimer * buffer.CursorBlinkRate * 2) % 2 == 0)))
+                                {
+                                    int cursorRow = buffer.CursorRow;
+                                    int cursorCol = buffer.CursorCol;
+                                    float cursorX = margin + cursorCol * font.GlyphWidth;
+                                    float cursorY = yOffset + cursorRow * cellHeight;
+                                    float[] cursorColor = new float[] { 1.0f, 0.67f, 0.17f, 0.85f }; // Amber, semi-opaque
+                                    GL.Uniform4(uColorLocation, 1, cursorColor);
+                                    GL.Uniform1(uUseTextureLocation, 0);
+                                    // Draw block cursor (full cell)
+                                    DrawQuad(cursorX, cursorY, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
+                                }
                                 GL.BindTexture(TextureTarget.Texture2D, 0);
                                 GL.BindVertexArray(0);
                                 GL.UseProgram(0);
@@ -207,6 +220,11 @@ namespace CoolRetroPowershellTerm
                             Logger.Error("Error during rendering.", ex);
                             Environment.Exit(1);
                         }
+                    };
+                    window.UpdateFrame += (frame) =>
+                    {
+                        // Update cursor blink timer
+                        buffer.CursorBlinkTimer += (float)frame.Time;
                     };
                     window.Run();
                 }
