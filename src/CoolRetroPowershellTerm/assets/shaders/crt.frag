@@ -5,9 +5,10 @@ out vec4 outColor;
 uniform sampler2D screenTex;
 
 void main() {
-    // Push down the text by offsetting vUV.y
+    // Reduce left/right margin, keep vertical offset
+    float xMargin = 0.02; // 2% margin left/right
     float yOffset = 0.04; // Push down by 4% of the screen
-    vec2 boxUV = vUV + vec2(0.0, yOffset);
+    vec2 boxUV = vec2(mix(xMargin, 1.0 - xMargin, vUV.x), vUV.y + yOffset);
     // Clamp to [0,1] to avoid sampling outside
     boxUV = clamp(boxUV, 0.0, 1.0);
     vec2 centered = (boxUV - 0.5) * 2.0;
