@@ -16,7 +16,7 @@ namespace CoolRetroPowershellTerm
         static int uUseTextureLocation = -1;
         static Matrix4 ortho;
         static BitmapFont? font = null;
-        static string fontPath = "assets/fonts/ascii_16x16.png";
+        static string fontPath = "assets/fonts/TerminusTTF-4.49.3.ttf";
 
         static void Main(string[] args)
         {
@@ -25,14 +25,17 @@ namespace CoolRetroPowershellTerm
             int rows = 25;
             int glyphW = 20; // doubled from 10
             int glyphH = 24; // doubled from 12
+            int lineSpacing = 4; // vertical space between lines
+            int cellHeight = glyphH + lineSpacing;
+            int margin = 10; // margin for all sides
             // Resolve font path relative to executable
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "LightChop-7x9.ttf");
+            string resolvedFontPath = System.IO.Path.Combine(exeDir, "assets", "fonts", "TerminusTTF-4.49.3.ttf");
             Logger.Info($"Resolved font path: {resolvedFontPath}");
             fontPath = resolvedFontPath;
             var nativeWindowSettings = new NativeWindowSettings()
             {
-                ClientSize = new Vector2i(cols * glyphW, rows * glyphH),
+                ClientSize = new Vector2i(cols * glyphW + margin * 2, rows * cellHeight + margin * 2),
                 Title = "Cool Retro Powershell Term"
             };
 
@@ -105,14 +108,15 @@ namespace CoolRetroPowershellTerm
                                 int texLocation = GL.GetUniformLocation(shaderProgram, "tex");
                                 if (texLocation != -1)
                                     GL.Uniform1(texLocation, 0);
-                                int marginTop = 12; // Add a top margin in pixels (half a glyph height)
+                                int marginTop = lineSpacing / 2; // Center the first line a bit
+                                // Use margin for all sides
                                 for (int row = 0; row < buffer.Rows; row++)
                                 {
                                     for (int col = 0; col < buffer.Cols; col++)
                                     {
                                         var entry = buffer.Buffer[row, col];
-                                        float x = col * font.GlyphWidth;
-                                        float y = marginTop + row * font.GlyphHeight;
+                                        float x = margin + col * font.GlyphWidth;
+                                        float y = margin + (lineSpacing / 2) + row * cellHeight;
                                         // Use per-cell background color
                                         float[] bgColor = new float[] { entry.BgR, entry.BgG, entry.BgB, entry.BgA };
                                         GL.Uniform4(uColorLocation, 1, bgColor);

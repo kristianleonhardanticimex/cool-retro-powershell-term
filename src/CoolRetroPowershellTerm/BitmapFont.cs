@@ -18,6 +18,7 @@ namespace CoolRetroPowershellTerm
         public int GlyphHeight { get; }
         public int GridCols { get; }
         public int GridRows { get; }
+        public int Ascent { get; private set; }
 
         public BitmapFont(string ttfPath, int glyphWidth, int glyphHeight, int gridCols, int gridRows)
         {
@@ -34,7 +35,15 @@ namespace CoolRetroPowershellTerm
             fixed (byte* ttfPtr = ttf)
             {
                 var fontInfo = new StbTrueType.stbtt_fontinfo();
-                StbTrueType.stbtt_InitFont(fontInfo, ttfPtr, 0);
+                if (StbTrueType.stbtt_InitFont(fontInfo, ttfPtr, 0) == 0)
+                {
+                    Logger.Error($"StbTrueTypeSharp failed to initialize font: {ttfPath}. The file may be a TTC or unsupported TTF variant.");
+                    throw new Exception($"StbTrueTypeSharp could not parse font: {ttfPath}");
+                }
+                int ascent, descent, lineGap;
+                StbTrueType.stbtt_GetFontVMetrics(fontInfo, &ascent, &descent, &lineGap);
+                float scale = StbTrueType.stbtt_ScaleForPixelHeight(fontInfo, GlyphHeight);
+                Ascent = (int)(ascent * scale); // Ascent in pixels for this font size
                 int atlasWidth = GlyphWidth * GridCols;
                 int atlasHeight = GlyphHeight * GridRows;
                 byte[] atlas = new byte[atlasWidth * atlasHeight];
@@ -45,15 +54,18 @@ namespace CoolRetroPowershellTerm
                     int row = i / GridCols;
                     int x = col * GlyphWidth;
                     int y = row * GlyphHeight;
-                    float scale = StbTrueType.stbtt_ScaleForPixelHeight(fontInfo, GlyphHeight);
                     int gw = 0, gh = 0, gx = 0, gy = 0;
                     byte* glyphBitmap = StbTrueType.stbtt_GetCodepointBitmap(fontInfo, 0, scale, ch, &gw, &gh, &gx, &gy);
+                    // Offset the glyph so its baseline matches the cell baseline
+                    int yOffset = Ascent + gy;
                     for (int yy = 0; yy < gh; yy++)
                     for (int xx = 0; xx < gw; xx++)
                     {
                         int srcIdx = yy * gw + xx;
-                        int dstIdx = (y + yy) * atlasWidth + (x + xx);
-                        if (dstIdx < atlas.Length)
+                        int dstY = y + yOffset + yy;
+                        int dstX = x + xx;
+                        int dstIdx = dstY * atlasWidth + dstX;
+                        if (dstY >= y && dstY < y + GlyphHeight && dstX >= x && dstX < x + GlyphWidth && dstIdx < atlas.Length)
                             atlas[dstIdx] = glyphBitmap[srcIdx];
                     }
                     StbTrueType.stbtt_FreeBitmap(glyphBitmap, null);
