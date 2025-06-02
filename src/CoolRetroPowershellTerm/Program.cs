@@ -17,14 +17,15 @@ namespace CoolRetroPowershellTerm
         static Matrix4 ortho;
         static BitmapFont? font = null;
         static string fontPath = "assets/fonts/TerminusTTF-4.49.3.ttf";
+        static readonly Vector4 RetroBackground = new Vector4(0f, 0f, 0f, 0.0f); // Transparent background
 
         static void Main(string[] args)
         {
             // Adjust buffer and window size to fit glyphs
             int cols = 80;
             int rows = 25;
-            int glyphW = 12; // native pixel width for Terminus
-            int glyphH = 24; // native pixel height for Terminus
+            int glyphW = (int)(12 * 1.3); // scale up by 30%
+            int glyphH = (int)(24 * 1.3); // scale up by 30%
             int lineSpacing = 4; // vertical space between lines
             int cellHeight = glyphH + lineSpacing;
             int margin = 10; // margin for all sides
@@ -97,7 +98,7 @@ namespace CoolRetroPowershellTerm
                         {
                             GL.Enable(EnableCap.Blend);
                             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-                            GL.ClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+                            GL.ClearColor(RetroBackground.X, RetroBackground.Y, RetroBackground.Z, RetroBackground.W);
                             GL.Clear(ClearBufferMask.ColorBufferBit);
                             if (font != null)
                             {
@@ -118,7 +119,8 @@ namespace CoolRetroPowershellTerm
                                         float x = margin + col * font.GlyphWidth;
                                         float y = margin + (lineSpacing / 2) + row * cellHeight;
                                         // Use per-cell background color
-                                        float[] bgColor = new float[] { entry.BgR, entry.BgG, entry.BgB, entry.BgA };
+                                        // Set all cell backgrounds to black for a true CRT look
+                                        float[] bgColor = new float[] { 0f, 0f, 0f, 1.0f };
                                         GL.Uniform4(uColorLocation, 1, bgColor);
                                         GL.Uniform1(uUseTextureLocation, 0);
                                         DrawQuad(x, y, font.GlyphWidth, font.GlyphHeight, 0, 0, 1, 1);
