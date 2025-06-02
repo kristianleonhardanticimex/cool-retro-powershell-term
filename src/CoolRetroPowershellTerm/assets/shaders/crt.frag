@@ -43,4 +43,9 @@ void main() {
     glow *= glowStrength;
     // Combine glow and main color
     outColor = vec4(min(color + glow, 1.0), 1.0);
+    // --- Scanlines effect (classic, visible, and simple) ---
+    float scanlineFreq = 320.0; // Lower frequency for thicker scanlines
+    float scanlineStrength = 0.45; // Stronger scanlines
+    float scanline = 0.5 + 0.5 * sin(vUV.y * scanlineFreq * 3.14159);
+    outColor.rgb *= mix(1.0, 0.5, scanline * scanlineStrength);
 }
